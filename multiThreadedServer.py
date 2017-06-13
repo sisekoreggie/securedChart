@@ -31,7 +31,7 @@ if __name__ == "__main__":
  
         for sock in read_sockets:
             #New connection
-            if sock == server_socket:
+            if sock == server_socket and len(CONNECTION_LIST)<=2:
                 # Handle the case in which there is a new connection recieved through server_socket
                 sockfd, addr = server_socket.accept()
                 CONNECTION_LIST.append(sockfd)
