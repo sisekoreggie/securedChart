@@ -1,5 +1,6 @@
 # telnet program example
 import socket, select, string, sys
+from AESCrypto import AESCrypto
  
 def prompt() :
     sys.stdout.write('<You> ')
@@ -9,7 +10,7 @@ def prompt() :
 if __name__ == "__main__":
 
     host = "localhost"
-    port = 5000
+    port = 5001
      
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.settimeout(2)
@@ -23,7 +24,10 @@ if __name__ == "__main__":
      
     print 'Connected to remote host. Start sending messages'
     prompt()
-     
+
+    sessionKey = "1234567890123456"  #To be generated
+    aesCrypto = AESCrypto(sessionKey)
+
     while 1:
         socket_list = [sys.stdin, s]
          
@@ -45,6 +49,8 @@ if __name__ == "__main__":
             #user entered a message
             else :
                 msg = sys.stdin.readline()
-                s.send(msg)
+		newMsg = aesCrypto.encrypt(msg)
+		print(newMsg)
+                s.send(newMsg)
                 prompt()
 
